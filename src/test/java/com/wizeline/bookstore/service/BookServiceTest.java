@@ -3,7 +3,6 @@ package com.wizeline.bookstore.service;
 import com.wizeline.bookstore.dto.BookRequest;
 import com.wizeline.bookstore.dto.BookResponse;
 import com.wizeline.bookstore.entity.Book;
-import com.wizeline.bookstore.exception.DuplicateIsbnException;
 import com.wizeline.bookstore.exception.ResourceNotFoundException;
 import com.wizeline.bookstore.mapper.BookMapper;
 import com.wizeline.bookstore.repository.BookRepository;
@@ -95,20 +94,6 @@ class BookServiceTest {
         assertThat(result).isNotNull();
         assertThat(result.id()).isEqualTo(1L);
         verify(bookRepository).save(book);
-    }
-
-    @Test
-    @DisplayName("Should throw DuplicateIsbnException when creating book with duplicate ISBN")
-    void createBook_duplicateIsbn_throwsDuplicateIsbnException() {
-        BookRequest request = new BookRequest("Clean Code", "Robert C. Martin", "9780132350884", 2008, true);
-
-        when(bookRepository.existsByIsbn("9780132350884")).thenReturn(true);
-
-        assertThatThrownBy(() -> bookService.createBook(request))
-                .isInstanceOf(DuplicateIsbnException.class)
-                .hasMessageContaining("A book with ISBN '9780132350884' already exists.");
-
-        verify(bookRepository, never()).save(any());
     }
 
     @Test

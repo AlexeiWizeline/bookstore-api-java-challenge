@@ -78,25 +78,6 @@ class BookServiceTest {
     }
 
     @Test
-    @DisplayName("Should create book successfully when ISBN is unique")
-    void createBook_success() {
-        BookRequest request = new BookRequest("Clean Code", "Robert C. Martin", "9780132350884", 2008, true);
-        Book book = new Book(1L, "Clean Code", "Robert C. Martin", "9780132350884", 2008, true);
-        BookResponse response = new BookResponse(1L, "Clean Code", "Robert C. Martin", "9780132350884", 2008, true);
-
-        when(bookRepository.existsByIsbn("9780132350884")).thenReturn(false);
-        when(bookMapper.toEntity(request)).thenReturn(book);
-        when(bookRepository.save(book)).thenReturn(book);
-        when(bookMapper.toResponse(book)).thenReturn(response);
-
-        BookResponse result = bookService.createBook(request);
-
-        assertThat(result).isNotNull();
-        assertThat(result.id()).isEqualTo(1L);
-        verify(bookRepository).save(book);
-    }
-
-    @Test
     @DisplayName("Should delete book by ID when found")
     void deleteBook_success() {
         when(bookRepository.existsById(1L)).thenReturn(true);

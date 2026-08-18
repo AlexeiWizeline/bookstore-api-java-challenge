@@ -355,6 +355,73 @@ The interviewer will evaluate:
 
 ---
 
+# User Story 3 — Paginate and Sort Books
+
+## Story
+
+As a librarian,
+
+I want to retrieve books in paginated pages and custom sort orders,
+
+so the catalog loads quickly and efficiently without fetching unnecessary data.
+
+---
+
+## Functional Requirements
+
+Enhance the existing
+
+```
+GET /books
+```
+
+endpoint to support pagination and sorting.
+
+Supported query parameters:
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `page` | 0-based page index | `0` |
+| `size` | Number of records per page | `10` |
+| `sort` | Field name and direction (`field,asc` or `field,desc`) | `title,asc` |
+
+Examples
+
+```
+GET /books?page=0&size=5
+```
+
+```
+GET /books?page=1&size=10&sort=publishedYear,desc
+```
+
+```
+GET /books?page=0&size=10&sort=author,asc
+```
+
+---
+
+## Expected Behavior
+
+The endpoint should return HTTP `200 OK` with a structured payload containing:
+
+- The array of book records for the requested page.
+- Metadata describing the current page number, page size, total pages, and total record count.
+
+---
+
+## Evaluation Criteria
+
+The interviewer will evaluate:
+
+- Use of framework pagination and sorting features
+- API contract structure and metadata design
+- Efficient database query execution (avoiding in-memory dataset slicing)
+- Backwards compatibility with default parameters
+- Unit test coverage
+
+---
+
 # General Expectations
 
 Candidates are encouraged to:
